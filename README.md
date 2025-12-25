@@ -4,28 +4,21 @@ GroupPay is a modern, user-friendly platform to manage group finances and shared
 
 This project is built with Java (Spring Boot) for the backend and HTML, CSS, JavaScript, TailwindCSS for the frontend.
 
-🚀 Features User Management
+🚀 Features 
 
+User Management
 Registration & Login: Secure authentication for multiple users.
-
 Profile Management: Update personal information.
 
 Wallet Management
-
 Create Wallets: Users can create wallets for groups or purposes.
-
 Wallet Types: Personal or group wallets.
-
 Add Members: Invite users to join a wallet.
-
 View Wallet Details: See members, balances, and transactions.
 
 Transactions
-
 Add Transactions: Record expenses, income, or transfers.
-
 Transaction History: List of all transactions with timestamps.
-
 Automatic Balance Calculation: Tracks individual and total balances.
 
 Dashboard
