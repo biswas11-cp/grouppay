@@ -39,3 +39,14 @@ Built with **Java (Spring Boot)** for backend and **HTML, CSS, JavaScript, Tailw
 ---
 
 ## 📂 Project Structure
+GroupPay/
+├── src/main/java/com/grouppay
+│ ├── controller
+│ ├── service
+│ ├── model
+│ └── repository
+├── src/main/resources
+│ ├── templates (HTML files)
+│ └── application.properties
+├── pom.xml
+└── README.md
