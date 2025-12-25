@@ -46,7 +46,22 @@ GroupPay/
 │ ├── model
 │ └── repository
 ├── src/main/resources
-│ ├── templates (HTML files)
+│ ├── static (HTML files)
 │ └── application.properties
 ├── pom.xml
 └── README.md
+
+---
+
+## ⚡ Getting Started
+
+**Prerequisites:**  
+- Java JDK 17+  
+- Maven  
+- MySQL / H2 Database  
+- IDE (IntelliJ, Eclipse, VS Code)  
+
+**Steps to Run:**  
+1. Clone the repository:  
+```bash
+git clone https://github.com/biswas11-cp/grouppay.git
