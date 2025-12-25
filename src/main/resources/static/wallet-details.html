@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wallet Details - GroupPay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+
+<!-- Navbar -->
+<nav class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        <a href="dashboard.html" class="text-2xl font-bold text-indigo-600">GroupPay</a>
+        <span class="text-gray-600">Wallet Details</span>
+    </div>
+</nav>
+
+<!-- Main Container -->
+<div class="max-w-4xl mx-auto mt-8 space-y-6">
+
+    <!-- Wallet Info Card -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex justify-between items-center">
+            <div>
+                <h2 id="walletName" class="text-xl font-semibold text-gray-800">Wallet</h2>
+                <p class="text-gray-500 text-sm">UPI ID: <span id="walletUpi"></span></p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm text-gray-500">Available Balance</p>
+                <p class="text-3xl font-bold text-gray-900">₹<span id="walletBalance">0</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="bg-white rounded-lg shadow p-6 flex flex-col md:flex-row gap-4">
+        <!-- Add Money -->
+        <div class="flex-1">
+            <h3 class="font-semibold mb-2">Add Money</h3>
+            <div class="flex gap-2">
+                <input id="amountInput" type="number" placeholder="Enter amount"
+                       class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+                <button onclick="addMoney()"
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    Add
+                </button>
+            </div>
+        </div>
+
+        <!-- Add Members (Disabled) -->
+        <div class="flex-1">
+            <h3 class="font-semibold mb-2">Members</h3>
+            <input id="memberIdentifier" type="text" placeholder="Enter email or phone"
+                   class="w-full border rounded px-3 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button onclick="addMember()"
+                    class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Add Members
+            </button>
+        </div>
+    </div>
+
+    <!-- Members List -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold mb-4">Wallet Members</h3>
+
+        <div id="membersList" class="space-y-3">
+            <p class="text-gray-500 text-sm">Loading members...</p>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6 mt-6">
+        <h3 class="text-lg font-semibold mb-4">Debts (Who owes whom)</h3>
+        <div id="debtList" class="space-y-2">
+            <p class="text-gray-500 text-sm">Loading debts...</p>
+        </div>
+    </div>
+
+
+
+    <!-- Transactions -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold mb-4">Transactions</h3>
+        <div id="transactionList" class="space-y-3">
+            <!-- Transactions will load here -->
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const walletId = params.get("id"); // wallet id from dashboard
+
+    // Load wallet details
+    async function loadWallet() {
+        const res = await fetch(`http://localhost:9090/api/wallet/${walletId}`);
+        const wallet = await res.json();
+
+        document.getElementById("walletName").innerText = wallet.walletName;
+        document.getElementById("walletBalance").innerText = wallet.balance;
+        document.getElementById("walletUpi").innerText = wallet.upiAlias;
+
+        loadTransactions(wallet.userId);
+    }
+
+    // Add money
+    async function addMoney() {
+        const amount = parseFloat(document.getElementById("amountInput").value);
+
+        if (!amount || amount <= 0) {
+            alert("Enter a valid amount");
+            return;
+        }
+
+        const res = await fetch(
+            `http://localhost:9090/api/wallet/add-money?userId=${walletId}&amount=${amount}`,
+            { method: "POST" }
+        );
+
+        const wallet = await res.json();
+        document.getElementById("walletBalance").innerText = wallet.balance;
+        document.getElementById("amountInput").value = "";
+
+        loadTransactions(wallet.userId);
+    }
+
+    // Load transactions
+    async function loadTransactions(userId) {
+        const res = await fetch(`http://localhost:9090/api/wallet/transactions?userId=${userId}`);
+        const transactions = await res.json();
+
+        const list = document.getElementById("transactionList");
+        list.innerHTML = "";
+
+        if (transactions.length === 0) {
+            list.innerHTML = `<p class="text-gray-500 text-sm">No transactions yet</p>`;
+            return;
+        }
+
+        transactions.forEach(tx => {
+            const isCredit = tx.type === "CREDIT";
+            list.innerHTML += `
+                <div class="flex justify-between items-center p-3 border rounded">
+                    <div class="flex items-center gap-3">
+                        <div class="${isCredit ? 'bg-green-100' : 'bg-red-100'} p-2 rounded-full">
+                            <i class="fas ${isCredit ? 'fa-arrow-down text-green-600' : 'fa-arrow-up text-red-600'}"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium">${tx.type}</p>
+                            <p class="text-sm text-gray-500">${new Date(tx.timestamp).toLocaleString()}</p>
+                        </div>
+                    </div>
+                    <p class="font-semibold ${isCredit ? 'text-green-600' : 'text-red-600'}">
+                        ${isCredit ? '+' : '-'}₹${tx.amount}
+                    </p>
+                </div>
+            `;
+        });
+    }
+
+    window.onload = () => {
+    loadWallet();
+    loadMembers();
+};
+
+    function addMember() {
+
+    const member_setting = document.getElementById("memberIdentifier").value;
+
+    if (!member_setting) {
+        alert("Please enter email or phone");
+        return;
+    }
+
+    fetch("http://localhost:9090/api/wallet/member/add", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            walletId: walletId,              // ✅ from URL param
+            memberIdentifier: member_setting,
+            role: "MEMBER"                   // ✅ REQUIRED
+        })
+    })
+    .then(res => res.text())
+    .then(msg => {
+        alert(msg);
+        document.getElementById("memberIdentifier").value = "";
+        loadMembers();
+    })
+    .catch(err => console.error(err));
+
+    window.onload = () => {
+        loadWallet();
+        loadMembers();
+    };
+}
+function deleteMember(memberId) {
+
+    if (!confirm("Remove this member from wallet?")) return;
+
+    fetch(`http://localhost:9090/api/wallet/member/delete/${memberId}`, {
+        method: "DELETE"
+    })
+    .then(res => res.text())
+    .then(msg => {
+        alert(msg);
+        loadMembers(); // refresh list
+    })
+    .catch(err => console.error(err));
+}
+
+    async function loadMembers() {
+    const res = await fetch(`http://localhost:9090/api/wallet/member/${walletId}`);
+    const members = await res.json();
+
+    const list = document.getElementById("membersList");
+    list.innerHTML = "";
+
+    if (members.length === 0) {
+        list.innerHTML = `<p class="text-gray-500 text-sm">No members added yet</p>`;
+        return;
+    }
+
+    members.forEach(member => {
+    list.innerHTML += `
+        <div class="flex justify-between items-center border rounded p-3">
+            <div>
+                <p class="font-medium text-gray-800">
+                    ${member.memberIdentifier}
+                </p>
+                <p class="text-sm text-gray-500">
+                    Role: ${member.role}
+                </p>
+            </div>
+
+            <button onclick="deleteMember(${member.id})"
+                class="text-red-600 hover:text-red-800">
+                ❌
+            </button>
+        </div>
+    `;
+});
+
+
+
+
+
+
+
+}
+
+</script>
+
+</body>
+</html>

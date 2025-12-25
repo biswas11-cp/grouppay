@@ -1,0 +1,13 @@
+package com.grouppay.grouppay;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class GroupPayApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}

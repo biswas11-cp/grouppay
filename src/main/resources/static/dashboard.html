@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Dashboard - GroupPay</title>
+    <div id="walletContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50">
+<nav class="bg-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center">
+                <a href="dashboard.html" class="text-2xl font-bold text-indigo-600">GroupPay</a>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Search wallets..." class="w-64 px-4 py-1 text-gray-700 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button class="absolute right-0 top-0 mt-2 mr-4">
+                        <i class="fas fa-search text-gray-600"></i>
+                    </button>
+                </div>
+                <div class="relative">
+                    <button onclick="toggleNotifications()" class="text-gray-600 hover:text-indigo-600">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">3</span>
+                    </button>
+                </div>
+                <div class="relative">
+                    <button onclick="toggleProfileMenu()" class="flex items-center space-x-2 text-gray-700 hover:text-indigo-600">
+                        <img src="https://ui-avatars.com/api/?name=John+Doe" alt="Profile" class="w-8 h-8 rounded-full">
+                        <span>srujan</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <!-- Main Grid Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column - Wallet Overview -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Balance Card -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-900">Main Wallet</h2>
+                    <div class="flex space-x-2">
+                        <button onclick="addMoneyPrompt()" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+                            <i class="fas fa-plus mr-2"></i>Add Money
+                        </button>
+                        <button onclick="window.location.href='/pay'" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+                            <i class="fas fa-paper-plane mr-2"></i>Pay/Send
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
+                    <div>
+                        <p class="text-sm text-gray-500">Available Balance</p>
+                        <h3 id="mainBalance" class="text-3xl font-bold text-gray-900">₹0.00</h3>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-500">UPI ID</p>
+                        <p class="text-gray-900">john.doe@grouppay</p>
+                        <button class="text-indigo-600 text-sm hover:text-indigo-700">
+                            <i class="fas fa-copy mr-1"></i>Copy
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-900">Recent Transactions</h2>
+                    <a href="/transactions" class="text-indigo-600 hover:text-indigo-700">View All</a>
+                </div>
+                <div class="space-y-4">
+                    <!-- Transaction Item -->
+                    <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-green-100 p-2 rounded-full">
+                                <i class="fas fa-arrow-down text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">Received from Priya</p>
+                                <p class="text-sm text-gray-500">Today, 2:30 PM</p>
+                            </div>
+                        </div>
+                        <p class="text-green-600 font-medium">+₹500.00</p>
+                    </div>
+                    <!-- Transaction Item -->
+                    <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-red-100 p-2 rounded-full">
+                                <i class="fas fa-arrow-up text-red-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">Paid to Swiggy</p>
+                                <p class="text-sm text-gray-500">Yesterday, 8:45 PM</p>
+                            </div>
+                        </div>
+                        <p class="text-red-600 font-medium">-₹750.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Group Wallets -->
+        <div class="space-y-6">
+            <!-- Create New Wallet Card -->
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-md p-6 text-white">
+                <h2 class="text-xl font-semibold mb-4">Create New Group Wallet</h2>
+                <p class="mb-4 text-indigo-100">Start managing expenses together with your group</p>
+                <!--<button onclick="href='create-wallet.html" class="bg-white text-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-50 w-full">
+                    <i class="fas fa-plus mr-2"></i>Create Wallet
+                </button>-->
+                <a href="create-wallet.html" class="bg-white text-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-50 w-full">Create Wallet</a>
+
+            </div>
+
+            <!-- Group Wallets List -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-900">Your Group Wallets</h2>
+                    <a href="joined-wallets.html" class="text-indigo-600 hover:text-indigo-700">View All Joined Wallets</a>
+                </div>
+                <div class="space-y-4">
+                    <div id="walletList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Wallet cards will appear here -->
+                    </div>
+                    <!-- Wallet Item -->
+                    <!--<div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-500 cursor-pointer">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-medium text-gray-900">Flatmates Fund</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Active</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-2">4 members</p>
+                        <div class="flex justify-between items-center">
+                            <p class="text-indigo-600 font-medium">₹12,000.00</p>
+                            <button class="text-gray-500 hover:text-indigo-600">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>-->
+                    <!-- Wallet Item -->
+                    <!--<div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-500 cursor-pointer">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-medium text-gray-900">Team Lunch</h3>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Active</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-2">8 members</p>
+                        <div class="flex justify-between items-center">
+                            <p class="text-indigo-600 font-medium">₹5,000.00</p>
+                            <button class="text-gray-500 hover:text-indigo-600">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Monthly Overview</h2>
+                <canvas id="monthlyChart" class="w-full"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Toggle notifications dropdown
+    function toggleNotifications() {
+        // Add your notification toggle logic here
+    }
+
+    // Toggle profile menu dropdown
+    function toggleProfileMenu() {
+        // Add your profile menu toggle logic here
+    }
+
+    // Monthly overview chart
+    const ctx = document.getElementById('monthlyChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Expenses',
+                data: [12000, 19000, 15000, 25000, 22000, 30000],
+                borderColor: 'rgb(99, 102, 241)',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    fetch('/api/wallets/my-list')
+    .then(res => res.json())
+    .then(wallets => {
+        // Logic to display wallet cards goes here
+    });
+
+    async function loadWallets() {
+    const response = await fetch("http://localhost:9090/api/wallet/all");
+    const wallets = await response.json();
+
+    const walletList = document.getElementById("walletList");
+    walletList.innerHTML = "";
+
+    wallets.forEach(wallet => {
+        walletList.innerHTML += `
+            <div class="bg-white shadow rounded p-4">
+                <h3 class="text-lg font-bold">${wallet.walletName}</h3>
+                <p class="text-sm text-gray-600">UPI: wallet-${wallet.upiAlias}</p>
+                <p class="text-sm">Withdraw: ${wallet.withdrawPermission}</p>
+            </div>
+        `;
+    });
+}
+
+window.onload = loadWallets;
+    async function loadMainWallet() {
+    const response = await fetch("http://localhost:9090/api/wallet/main?userId=1"); // replace userId dynamically
+    const wallet = await response.json();
+    document.getElementById("mainBalance").innerText = `₹${wallet.balance.toFixed(2)}`;
+}
+window.onload = () => {
+    loadWallets();
+    loadMainWallet();
+};
+async function loadTransactions() {
+    const response = await fetch("http://localhost:9090/api/wallet/transactions?userId=1");
+    const transactions = await response.json();
+    const container = document.querySelector(".space-y-4");
+    container.innerHTML = "";
+    transactions.forEach(txn => {
+        const txnItem = document.createElement("div");
+        txnItem.className = "flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg";
+        txnItem.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <div class="bg-${txn.type === 'CREDIT' ? 'green' : 'red'}-100 p-2 rounded-full">
+                    <i class="fas fa-arrow-${txn.type === 'CREDIT' ? 'down' : 'up'} text-${txn.type === 'CREDIT' ? 'green' : 'red'}-600"></i>
+                </div>
+                <div>
+                    <p class="font-medium text-gray-900">${txn.type === 'CREDIT' ? 'Received' : 'Paid'} ${txn.wallet.walletName}</p>
+                    <p class="text-sm text-gray-500">${new Date(txn.timestamp).toLocaleString()}</p>
+                </div>
+            </div>
+            <p class="text-${txn.type === 'CREDIT' ? 'green' : 'red'}-600 font-medium">${txn.type === 'CREDIT' ? '+' : '-'}₹${txn.amount.toFixed(2)}</p>
+        `;
+        container.appendChild(txnItem);
+    });
+}
+window.onload = () => {
+    loadWallets();
+    loadMainWallet();
+    loadTransactions();
+};
+async function addMoneyPrompt() {
+    const amount = parseFloat(prompt("Enter amount to add:"));
+    if(amount && amount > 0){
+        const response = await fetch(`http://localhost:9090/api/wallet/add-money?userId=1&amount=${amount}`, { method: "POST" });
+        const wallet = await response.json();
+        document.getElementById("mainBalance").innerText = `₹${wallet.balance.toFixed(2)}`;
+        alert("Money added successfully!");
+        loadTransactions();
+    }
+}
+wallets.forEach(wallet => {
+    walletList.innerHTML += `
+        <div
+            class="bg-white shadow rounded p-4 cursor-pointer hover:border-indigo-500 border"
+            onclick="openWallet(${wallet.id})"
+        >
+            <h3 class="text-lg font-bold">${wallet.walletName}</h3>
+            <p class="text-sm text-gray-600">UPI: wallet-${wallet.upiAlias}</p>
+            <p class="text-sm font-semibold text-indigo-600">
+                Balance: ₹${wallet.balance ?? 0}
+            </p>
+        </div>
+    `;
+});
+
+    function openWallet(walletId) {
+    window.location.href = `wallet-details.html?id=${walletId}`;
+}
+
+</script>
+</body>
+</html>
