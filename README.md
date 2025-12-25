@@ -1,9 +1,5 @@
 # GroupPay 🚀
 
-![Java](https://img.shields.io/badge/Language-Java-blue) 
-![HTML](https://img.shields.io/badge/Frontend-HTML%2C%20CSS%2C%20JS-orange) 
-![License](https://img.shields.io/badge/License-MIT-green)
-
 **GroupPay** is a modern platform to manage group finances and shared expenses. It allows users to create wallets, track transactions, manage members, and maintain transparent group payments.  
 
 Built with **Java (Spring Boot)** for backend and **HTML, CSS, JavaScript, TailwindCSS** for frontend.  
