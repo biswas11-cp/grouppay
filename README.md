@@ -14,6 +14,7 @@ This project is built with Java (Spring Boot) for the backend and HTML, CSS, Jav
 
 
 
+
 -Wallet Management:
 
 ·Create Wallets: Users can create wallets for groups or purposes.
