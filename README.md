@@ -6,16 +6,6 @@ Built with **Java (Spring Boot)** for backend and **HTML, CSS, JavaScript, Tailw
 
 ---
 
-## 📑 Table of Contents
-- [Features](#features)  
-- [Technologies Used](#technologies-used)  
-- [Project Structure](#project-structure)  
-- [Getting Started](#getting-started)  
-- [Screenshots](#screenshots)  
-- [Future Enhancements](#future-enhancements)  
-- [License](#license)  
-
----
 
 ## 🚀 Features
 
