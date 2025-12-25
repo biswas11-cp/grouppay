@@ -11,18 +11,17 @@ Built with **Java (Spring Boot)** for backend and **HTML, CSS, JavaScript, Tailw
 
 **User Management:**  
 - Register and log in securely.  
-- Update personal profile information.  
 
 **Wallet Management:**  
 - Create wallets for personal or group use.  
 - Support for multiple wallet types.  
 - Add members to wallets.  
-- View wallet details: members, balances, transactions.  
+- View wallet details: members, balances.  
 
 **Transactions:**  
 - Add expenses, income, or transfers.  
-- View transaction history with timestamps.  
-- Automatic calculation of individual and total balances.  
+<!--- View transaction history with timestamps.  
+- Automatic calculation of individual and total balances.-->  
 
 **Dashboard:**  
 - Overview of all wallets a user belongs to.  
@@ -46,7 +45,7 @@ GroupPay/
 │ ├── model
 │ └── repository
 ├── src/main/resources
-│ ├── static (HTML files)
+│ ├── static (HTML/CSS/JS files)
 │ └── application.properties
 ├── pom.xml
 └── README.md
@@ -58,10 +57,11 @@ GroupPay/
 **Prerequisites:**  
 - Java JDK 17+  
 - Maven  
-- MySQL / H2 Database  
-- IDE (IntelliJ, Eclipse, VS Code)  
+- MySQL Database  
+- IDE (IntelliJ)  
 
 **Steps to Run:**  
 1. Clone the repository:  
 ```bash
-git clone https://github.com/biswas11-cp/grouppay.git
+git clone https://github.com/biswas11-cp/grouppay.git 
+
