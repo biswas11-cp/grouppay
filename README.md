@@ -4,8 +4,7 @@ GroupPay is a modern, user-friendly platform to manage group finances and shared
 
 This project is built with Java (Spring Boot) for the backend and HTML, CSS, JavaScript, TailwindCSS for the frontend.
 
-🚀 Features
-User Management
+🚀 Features User Management
 
 Registration & Login: Secure authentication for multiple users.
 
