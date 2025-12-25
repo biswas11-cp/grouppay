@@ -7,8 +7,9 @@ This project is built with Java (Spring Boot) for the backend and HTML, CSS, Jav
 🚀 Features 
 
 -User Management:
-  ·Registration & Login: Secure authentication for multiple users.
-  ·Profile Management: Update personal information.
+
+·Registration & Login: Secure authentication for multiple users.
+·Profile Management: Update personal information.
 
 
 
