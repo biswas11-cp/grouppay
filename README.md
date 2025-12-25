@@ -64,4 +64,12 @@ GroupPay/
 1. Clone the repository:  
 ```bash
 git clone https://github.com/biswas11-cp/grouppay.git 
-
+```
+---
+### **[GroupPay](https://github.com/yourusername/grouppay)**
+- A platform to manage **group wallets, shared transactions, and expenses**.  
+- Features:
+  - User registration & login
+  - Wallet creation and member management
+  - Transaction history & balance tracking
+  - Responsive dashboard with TailwindCSS
